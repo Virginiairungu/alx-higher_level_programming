@@ -1,32 +1,33 @@
-#!/usr/bin/python3
-import MySQLdb
+#!/usr/bin/env python3
 import sys
+import MySQLdb
 
 if __name__ == "__main__":
-    # Get MySQL credentials and database name from command line arguments
-    mysql_user = sys.argv[1]
-    mysql_password = sys.argv[2]
+    # Get MySQL credentials from command-line arguments
+    username = sys.argv[1]
+    password = sys.argv[2]
     db_name = sys.argv[3]
 
-    # Connect to the MySQL database
-    db = MySQLdb.connect(host="localhost",
-                         user=mysql_user,
-                         passwd=mysql_password,
-                         db=db_name)
+    # Connect to the MySQL server
+    db = MySQLdb.connect(
+        host="localhost",
+        port=3306,
+        user=username,
+        passwd=password,
+        db=db_name
+    )
 
-    # Create a cursor object to interact with the database
+    # Create a cursor object to execute queries
     cursor = db.cursor()
 
-    # Execute a query to fetch all states
+    # Execute SQL query to select all states ordered by id
     cursor.execute("SELECT * FROM states ORDER BY id ASC")
 
-    # Fetch all the rows from the result of the query
-    rows = cursor.fetchall()  # Fixed typo here
-
-    # Print each row
+    # Fetch all rows and print them
+    rows = cursor.fetchall()
     for row in rows:
         print(row)
 
-    # Close the cursor and the database connection
+    # Close the cursor and database connection
     cursor.close()
     db.close()
