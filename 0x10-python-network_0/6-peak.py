@@ -1,25 +1,25 @@
 #!/usr/bin/python3
-"""
-a function that finds a peak in a list of unsorted integers.
-"""
+"""Finds a peak in a list of unsorted integers"""
 
 
 def find_peak(list_of_integers):
-    """
-    Return a peak in a list of unsorted integers
-    """
-    if len(list_of_integers) == 0:
+    """Finds a peak in a list of unsorted integers"""
+    if not list_of_integers:
         return None
-    if len(list_of_integers) == 1:
-        return list_of_integers[0]
-    if len(list_of_integers) == 2:
-        return max(list_of_integers)
 
-    mid = int(len(list_of_integers) / 2)
-    peak = list_of_integers[mid]
-    if peak > list_of_integers[mid - 1] and peak > list_of_integers[mid + 1]:
-        return peak
-    elif peak < list_of_integers[mid - 1]:
-        return find_peak(list_of_integers[:mid])
-    else:
-        return find_peak(list_of_integers[mid + 1:])
+    def binary_search_peak(low, high):
+        mid = (low + high) // 2
+        
+        # Check if mid is a peak
+        if (mid == 0 or list_of_integers[mid] >= list_of_integers[mid - 1]) and \
+           (mid == len(list_of_integers) - 1 or list_of_integers[mid] >= list_of_integers[mid + 1]):
+            return list_of_integers[mid]
+        # If left neighbor is greater, the peak must be on the left side
+        elif mid > 0 and list_of_integers[mid - 1] > list_of_integers[mid]:
+            return binary_search_peak(low, mid - 1)
+        # If right neighbor is greater, the peak must be on the right side
+        else:
+            return binary_search_peak(mid + 1, high)
+
+    return binary_search_peak(0, len(list_of_integers) - 1)
+
